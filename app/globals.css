@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Font families. Space Grotesk / Inter are used when available locally or
+       injected by a font provider; the stacks below are the safe fallback. */
+    --font-heading: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    /* Height of the fixed credit bar. FooterBar.tsx overwrites this with the
+       measured height once JS runs; the fallback keeps the Smart Dock clear of
+       the bar on first paint and when JS is unavailable. */
+    --dockbar-h: 3.5rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-offwhite font-body text-slate-700 antialiased;
+    /* Prevent horizontal overflow at 320px (QA checklist). */
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading font-semibold tracking-tight text-navy-700;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-navy-700 ring-offset-2 ring-offset-offwhite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-container px-5 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full bg-navy-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-navy-700;
+  }
+
+  .section {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  /* Reserves room below content so the fixed Smart Dock and credit bar never
+     cover it. Tighter on desktop, where the dock only sits on the right edge. */
+  .pb-safe {
+    padding-bottom: calc(var(--dockbar-h, 3.5rem) + 6rem);
+  }
+
+  @media (min-width: 768px) {
+    .pb-safe {
+      padding-bottom: calc(var(--dockbar-h, 3.5rem) + 5rem);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .pb-safe {
+      padding-bottom: calc(var(--dockbar-h, 3.5rem) + 4rem);
+    }
+  }
+}
+
+@layer utilities {
+  /* Hairline divider used between light sections. */
+  .rule {
+    @apply border-t border-slate-200/80;
+  }
+}
